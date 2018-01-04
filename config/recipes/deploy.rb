@@ -94,18 +94,7 @@ ruby_block "download-object" do
                          key: s3filename,
                          response_target: 'C:\\temp\\evaluate.zip')
     
-    powershell_script 'run remote script' do
-      code <<-EOH
-      Add-Type -AssemblyName System.IO.Compression.FileSystem
-      function Unzip
-      {
-          param([string]$zipfile, [string]$outpath)
-
-          [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
-      }
-      Unzip "C:\\temp\\evaluate.zip" "c:\\temp"
-      EOH
-    end
+    
 
 #     windows_zipfile 'c:\\temp' do
 #       source 'C:\\temp\\evaluate.zip'
@@ -126,6 +115,19 @@ ruby_block "download-object" do
     
   end
   action :run
+end
+
+powershell_script 'unzip zip file' do
+  code <<-EOH
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  function Unzip
+  {
+      param([string]$zipfile, [string]$outpath)
+
+      [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+  }
+  Unzip "C:\\temp\\evaluate.zip" "c:\\temp"
+  EOH
 end
 
 
