@@ -30,3 +30,31 @@ template "c:\\inetpub\\wwwroot\\index.html" do
     host_name: instance[:hostname]
     )
 end
+
+chef_gem "aws-sdk" do
+  compile_time false
+  action :install
+end
+
+ruby_block "download-object" do
+  block do
+    require 'aws-sdk'
+
+    #1
+    Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
+
+    #2
+    query = Chef::Search::Query.new
+    app = query.search(:aws_opsworks_app, "type:other").first
+    s3region = "US-EAST-1"
+    s3bucket = "deleteme-evaluate-releases"
+    s3filename = "20171214.1.zip"
+
+    #3
+    s3_client = Aws::S3::Client.new(region: s3region)
+    s3_client.get_object(bucket: s3bucket,
+                         key: s3filename,
+                         response_target: 'C:\temp\evaluate.zip')
+  end
+  action :run
+end
