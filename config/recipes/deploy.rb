@@ -62,6 +62,14 @@ s3_remote_path = uri_path_components.join("/")
 Chef::Log.info("**********The uri is: '#{uri}'**********")
 Chef::Log.info("**********The s3_remote_path is: '#{s3_remote_path}'**********")
 Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
+
+
+directory "c:\temp" do  
+  rights :full_control, 'Administrators', :applies_to_children => true
+  rights :write, 'Everyone', :applies_to_children => true
+  action :create
+end
+
 ruby_block "download-object" do
   block do
     require 'aws-sdk'
