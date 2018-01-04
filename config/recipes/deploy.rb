@@ -10,22 +10,23 @@ file "c:\\inetpub\\wwwroot\\status.html" do
   action  :create
 end
 
-windowsserver = search(:aws_opsworks_instance, "hostname:web*").first
-Chef::Log.info("**********The public IP address is: '#{windowsserver[:public_ip]}'**********")
-Chef::Log.info("**********The private IP address is: '#{windowsserver[:private_ip]}'**********")
-Chef::Log.info("**********The ec2_instance_id is: '#{windowsserver[:ec2_instance_id]}'**********")
-Chef::Log.info("**********The availability_zone is: '#{windowsserver[:availability_zone]}'**********")
-Chef::Log.info("**********The hostname is: '#{windowsserver[:hostname]}'**********")
+#windowsserver = search(:aws_opsworks_instance, "hostname:web*").first
+instance = search("aws_opsworks_instance", "self:true").first
+Chef::Log.info("**********The public IP address is: '#{instance[:public_ip]}'**********")
+Chef::Log.info("**********The private IP address is: '#{instance[:private_ip]}'**********")
+Chef::Log.info("**********The ec2_instance_id is: '#{instance[:ec2_instance_id]}'**********")
+Chef::Log.info("**********The availability_zone is: '#{instance[:availability_zone]}'**********")
+Chef::Log.info("**********The hostname is: '#{instance[:hostname]}'**********")
 Chef::Log.info("**********The time is: '#{time}'**********")
 
 template "c:\\inetpub\\wwwroot\\index.html" do
   source "index.erb"
   variables(
     time: time,
-    instance_id: windowsserver[:ec2_instance_id],
-    id: windowsserver[:instance_id],
-    ip: windowsserver[:private_ip],
-    az: windowsserver[:availability_zone],
-    host_name: windowsserver[:hostname]
+    instance_id: instance[:ec2_instance_id],
+    id: instance[:instance_id],
+    ip: instance[:private_ip],
+    az: instance[:availability_zone],
+    host_name: instance[:hostname]
     )
 end
