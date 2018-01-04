@@ -110,4 +110,5 @@ ruby_block "download-object" do
 #     action [:stop, :enable, :start]
 #   end
   end
+  action :run
 end
