@@ -18,14 +18,14 @@ Chef::Log.info("**********The availability_zone is: '#{windowsserver[:availabili
 Chef::Log.info("**********The hostname is: '#{windowsserver[:hostname]}'**********")
 Chef::Log.info("**********The time is: '#{time}'**********")
 
-# template "c:\\inetpub\\wwwroot\\index.html" do
-#   source "index.erb"
-#   variables(
-#     time: time,
-#     instance_id: node["opsworks"]["instance"]["aws_instance_id"],
-#     id: node["opsworks"]["instance"]["id"],
-#     ip: node["opsworks"]["instance"]["ip"],
-#     az: node["opsworks"]["instance"]["availability_zone"],
-#     host_name: node["opsworks"]["instance"]["hostname"]
-#     )
-# end
+template "c:\\inetpub\\wwwroot\\index.html" do
+  source "index.erb"
+  variables(
+    time: time,
+    instance_id: windowsserver[:ec2_instance_id],
+    id: windowsserver[:instance_id],
+    ip: windowsserver[:private_ip],
+    az: windowsserver[:availability_zone],
+    host_name: windowsserver[:hostname]
+    )
+end
