@@ -54,31 +54,34 @@ end
 s3_remote_path = uri_path_components.join("/")
 Chef::Log.info("**********The uri is: '#{uri}'**********")
 Chef::Log.info("**********The s3_remote_path is: '#{s3_remote_path}'**********")
+Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
 ruby_block "download-object" do
   block do
     require 'aws-sdk'
 
     #1
-#    Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
+    Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
 
     #2
-#    query = Chef::Search::Query.new
-#    app = query.search(:aws_opsworks_app, "type:other").first
-#     s3region = "US-EAST-1"
-#     s3bucket = "deleteme-evaluate-releases"
-#     s3filename = "20171214.1.zip"
+    query = Chef::Search::Query.new
+    app = query.search(:aws_opsworks_app, "type:other").first
+    s3region = "US-EAST-1"
+    #s3bucket = "deleteme-evaluate-releases"
+    s3bucket = s3_bucket
+#    s3filename = "20171214.1.zip"
+    s3filename = s3_remote_path
 
     #3
-#     s3_client = Aws::S3::Client.new(region: s3region)
-#     s3_client.get_object(bucket: s3bucket,
-#                          key: s3filename,
-#                          response_target: 'C:\temp\evaluate.zip')
+    s3_client = Aws::S3::Client.new(region: s3region)
+    s3_client.get_object(bucket: s3bucket,
+                         key: s3filename,
+                         response_target: 'C:\temp\evaluate.zip')
     
-    aws_s3_file "temp/evaluate.zip" do
-      bucket s3_bucket
-      remote_path s3_remote_path
-      retries 3
-    end
+#     aws_s3_file "temp/evaluate.zip" do
+#       bucket s3_bucket
+#       remote_path s3_remote_path
+#       retries 3
+#     end
     
   end
   action :run
