@@ -36,10 +36,11 @@ chef_gem "aws-sdk" do
   action :install
 end
 
-chef_gem "zipfile" do
-  compile_time false
-  action :install
-end
+# chef_gem "zipfile" do
+#   compile_time false
+#   action :install
+# end
+
 
 
 
@@ -73,7 +74,7 @@ end
 ruby_block "download-object" do
   block do
     require 'aws-sdk'
-    require 'zipfile'   
+    #require 'zipfile'   
 
     #1
     Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
@@ -93,10 +94,16 @@ ruby_block "download-object" do
                          key: s3filename,
                          response_target: 'C:\temp\evaluate.zip')
     
-    zipfile "C:\temp\evaluate.zip" do
-      into "C:\temp"
-      overwrite true
+    windows_zipfile 'c:\temp' do
+      source 'C:\temp\evaluate.zip'
+      action :unzip
+     # not_if {::File.exists?('c:/test_app')}
     end
+    
+#     zipfile "C:\temp\evaluate.zip" do
+#       into "C:\temp"
+#       overwrite true
+#     end
     
 #     aws_s3_file "temp/evaluate.zip" do
 #       bucket s3_bucket
