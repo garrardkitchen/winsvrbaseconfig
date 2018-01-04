@@ -36,6 +36,13 @@ chef_gem "aws-sdk" do
   action :install
 end
 
+chef_gem "zipfile" do
+  compile_time false
+  action :install
+end
+
+
+
 app = search(:aws_opsworks_app).first
 app_path = "/srv/#{app['shortname']}"
 uri = URI.parse(app["app_source"]["url"])
@@ -58,6 +65,7 @@ Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
 ruby_block "download-object" do
   block do
     require 'aws-sdk'
+    require 'zipfile'   
 
     #1
     Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
@@ -76,6 +84,11 @@ ruby_block "download-object" do
     s3_client.get_object(bucket: s3bucket,
                          key: s3filename,
                          response_target: 'C:\temp\evaluate.zip')
+    
+    zipfile "C:\temp\evaluate.zip" do
+      into "C:\temp"
+      overwrite true
+    end
     
 #     aws_s3_file "temp/evaluate.zip" do
 #       bucket s3_bucket
