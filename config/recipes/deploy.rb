@@ -31,10 +31,10 @@ template "c:\\inetpub\\wwwroot\\index.html" do
     )
 end
 
-# chef_gem "aws-sdk" do
-#   compile_time false
-#   action :install
-# end
+chef_gem "aws-sdk" do
+  compile_time false
+  action :install
+end
 
 # ruby_block "download-object" do
 #   block do
@@ -80,23 +80,26 @@ end
 s3_remote_path = uri_path_components.join("/")
 s3_base_uri.to_s.chomp!("/")
 
-application app_path do
+ruby_block "download-object" do
+  block do
+    require 'aws-sdk'
+#application app_path do
   
-  tmpdir = Dir.mktmpdir("temp")
-  directory tmpdir do
-    action :create
-  end
+    tmpdir = Dir.mktmpdir("temp")
+    directory tmpdir do
+      action :create
+    end
 
-  aws_s3_file "#{tmpdir}/archive" do
-    bucket s3_bucket
-    remote_path s3_remote_path
-    retries 3
-  end
+    aws_s3_file "#{tmpdir}/archive" do
+      bucket s3_bucket
+      remote_path s3_remote_path
+      retries 3
+    end
 
-  zipfile "#{tmpdir}/archive" do
-    into "#{app_path}"
-    overwrite true
-  end
+    zipfile "#{tmpdir}/archive" do
+      into "#{app_path}"
+      overwrite true
+    end
 
 #   link "#{app_path}/server.js" do
 #     to "#{app_path}/index.js"
@@ -106,4 +109,5 @@ application app_path do
 #   npm_start do
 #     action [:stop, :enable, :start]
 #   end
+  end
 end
