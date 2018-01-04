@@ -10,14 +10,14 @@ file "c:\\inetpub\\wwwroot\\status.html" do
   action  :create
 end
 
-template 'c:\\inetpub\\wwwroot\\index.html' do
-  source 'index.erb' 
+template "c:\\inetpub\\wwwroot\\index.html" do
+  source "index.erb"
   variables(
-    :time => time,
-    :instance_id => node["opsworks"]["instance"]["aws_instance_id"],
-    :id => node["opsworks"]["instance"]["id"],
-    :ip => node["opsworks"]["instance"]["ip"],
-    :az => node["opsworks"]["instance"]["availability_zone"],
-    :host_name => node["opsworks"]["instance"]["hostname"]
+    time: time,
+    instance_id: node["opsworks"]["instance"]["aws_instance_id"],
+    id: node["opsworks"]["instance"]["id"],
+    ip: node["opsworks"]["instance"]["ip"],
+    az: node["opsworks"]["instance"]["availability_zone"],
+    host_name: node["opsworks"]["instance"]["hostname"]
     )
 end
