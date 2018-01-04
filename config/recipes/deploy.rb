@@ -65,7 +65,7 @@ Chef::Log.info("**********The s3_remote_path is: '#{s3_remote_path}'**********")
 Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
 
 
-directory "c:\temp" do  
+directory "c:\\temp" do  
   rights :full_control, 'Administrators', :applies_to_children => true
   rights :write, 'Everyone', :applies_to_children => true
   action :create
@@ -92,10 +92,10 @@ ruby_block "download-object" do
     s3_client = Aws::S3::Client.new(region: s3region)
     s3_client.get_object(bucket: s3bucket,
                          key: s3filename,
-                         response_target: 'C:\temp\evaluate.zip')
+                         response_target: 'C:\\temp\\evaluate.zip')
     
-    windows_zipfile 'c:\temp' do
-      source 'C:\temp\evaluate.zip'
+    windows_zipfile 'c:\\temp' do
+      source 'C:\\temp\\evaluate.zip'
       action :unzip
      # not_if {::File.exists?('c:/test_app')}
     end
