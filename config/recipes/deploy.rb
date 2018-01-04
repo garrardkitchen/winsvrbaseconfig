@@ -94,11 +94,24 @@ ruby_block "download-object" do
                          key: s3filename,
                          response_target: 'C:\\temp\\evaluate.zip')
     
-    windows_zipfile 'c:\\temp' do
-      source 'C:\\temp\\evaluate.zip'
-      action :unzip
-     # not_if {::File.exists?('c:/test_app')}
+    powershell_script 'run remote script' do
+      code <<-EOH
+      Add-Type -AssemblyName System.IO.Compression.FileSystem
+      function Unzip
+      {
+          param([string]$zipfile, [string]$outpath)
+
+          [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+      }
+      Unzip "C:\\temp\\evaluate.zip" "c:\\temp"
+      EOH
     end
+
+#     windows_zipfile 'c:\\temp' do
+#       source 'C:\\temp\\evaluate.zip'
+#       action :unzip
+#      # not_if {::File.exists?('c:/test_app')}
+#     end
     
 #     zipfile "C:\temp\evaluate.zip" do
 #       into "C:\temp"
@@ -114,6 +127,11 @@ ruby_block "download-object" do
   end
   action :run
 end
+
+
+
+
+
 
 
 
