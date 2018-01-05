@@ -44,95 +44,10 @@ end
 
 
 
-app = search(:aws_opsworks_app).first
-app_path = "/srv/#{app['shortname']}"
-uri = URI.parse(app["app_source"]["url"])
-uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
-virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
-s3_base_uri = uri.dup
-
-if virtual_host_match
-  s3_bucket = virtual_host_match[1]
-  s3_base_uri.path = "/"
-else
-  s3_bucket = uri_path_components[0]
-  s3_base_uri.path = "/#{uri_path_components.shift}"
-end
-
-s3_remote_path = uri_path_components.join("/")
-Chef::Log.info("**********The uri is: '#{uri}'**********")
-Chef::Log.info("**********The s3_remote_path is: '#{s3_remote_path}'**********")
-Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
-
-
-directory "c:\\temp" do  
-  rights :full_control, 'Administrators', :applies_to_children => true
-  rights :write, 'Everyone', :applies_to_children => true
-  action :create
-end
-
-ruby_block "download-object" do
-  block do
-    require 'aws-sdk'
-    #require 'zipfile'   
-
-    #1
-    Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
-
-    #2
-    query = Chef::Search::Query.new
-    app = query.search(:aws_opsworks_app, "type:other").first
-    s3region = "US-EAST-1"
-    #s3bucket = "deleteme-evaluate-releases"
-    s3bucket = s3_bucket
-#    s3filename = "20171214.1.zip"
-    s3filename = s3_remote_path
-
-    #3
-    s3_client = Aws::S3::Client.new(region: s3region)
-    s3_client.get_object(bucket: s3bucket,
-                         key: s3filename,
-                         response_target: 'C:\\temp\\evaluate.zip')
-    
-    
-
-#     windows_zipfile 'c:\\temp' do
-#       source 'C:\\temp\\evaluate.zip'
-#       action :unzip
-#      # not_if {::File.exists?('c:/test_app')}
-#     end
-    
-#     zipfile "C:\temp\evaluate.zip" do
-#       into "C:\temp"
-#       overwrite true
-#     end
-    
-#     aws_s3_file "temp/evaluate.zip" do
-#       bucket s3_bucket
-#       remote_path s3_remote_path
-#       retries 3
-#     end
-    
-  end
-  action :run
-end
-
-powershell_script 'unzip zip file' do
-  code <<-EOH
-  Add-Type -AssemblyName System.IO.Compression.FileSystem
-  function Unzip
-  {
-      param([string]$zipfile, [string]$outpath)
-
-      [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
-  }
-  Unzip "C:\\temp\\evaluate.zip" "c:\\temp"
-  EOH
-end
-
-
-
 app = search("aws_opsworks_app").first
+Chef::Log.info("********** ********** **********")
+Chef::Log.info("********** The app's deploy is '#{app['deploy']}' **********")
+Chef::Log.info("********** ********** **********")
 Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
 Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")
 Chef::Log.info("********** ********** **********")
@@ -144,55 +59,73 @@ Chef::Log.info("********** ********** **********")
 
 
 
-#app = search(:aws_opsworks_app).first
-#app_path = "/srv/#{app['shortname']}"
+if app['shortname'] = "evaluate" 
 
-# uri = URI.parse(app["app_source"]["url"])
-# uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
-# virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
-# s3_base_uri = uri.dup
+  app = search(:aws_opsworks_app).first
+  app_path = "/srv/#{app['shortname']}"
+  uri = URI.parse(app["app_source"]["url"])
+  uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
+  virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
+  s3_base_uri = uri.dup
 
-# if virtual_host_match
-#   s3_bucket = virtual_host_match[1]
-#   s3_base_uri.path = "/"
-# else
-#   s3_bucket = uri_path_components[0]
-#   s3_base_uri.path = "/#{uri_path_components.shift}"
-# end
+  if virtual_host_match
+    s3_bucket = virtual_host_match[1]
+    s3_base_uri.path = "/"
+  else
+    s3_bucket = uri_path_components[0]
+    s3_base_uri.path = "/#{uri_path_components.shift}"
+  end
 
-# s3_remote_path = uri_path_components.join("/")
-# s3_base_uri.to_s.chomp!("/")
+  s3_remote_path = uri_path_components.join("/")
+  Chef::Log.info("**********The uri is: '#{uri}'**********")
+  Chef::Log.info("**********The s3_remote_path is: '#{s3_remote_path}'**********")
+  Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
 
-# tmpdir = Dir.mktmpdir("temp")
-# directory tmpdir do
-#   action :create
-# end
 
-#ruby_block "download-object" do
-#  block do
-#    require 'aws-sdk'
-#application app_path do
-  
-   
-#     aws_s3_file "#{tmpdir}/archive" do
-#       bucket s3_bucket
-#       remote_path s3_remote_path
-#       retries 3
-#     end
+  directory "c:\\temp" do  
+    rights :full_control, 'Administrators', :applies_to_children => true
+    rights :write, 'Everyone', :applies_to_children => true
+    action :create
+  end
 
-#     zipfile "#{tmpdir}/archive" do
-#       into "#{app_path}"
-#       overwrite true
-#     end
+  ruby_block "download-object" do
+    block do
+      require 'aws-sdk'
+      #require 'zipfile'   
 
-#   link "#{app_path}/server.js" do
-#     to "#{app_path}/index.js"
-#   end
+      #1
+      Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
 
-#   npm_install
-#   npm_start do
-#     action [:stop, :enable, :start]
-#   end
-#  end
-#  action :run
-#end
+      #2
+      query = Chef::Search::Query.new
+      app = query.search(:aws_opsworks_app, "type:other").first
+      s3region = "US-EAST-1"
+      s3bucket = s3_bucket
+      s3filename = s3_remote_path
+
+      #3
+      s3_client = Aws::S3::Client.new(region: s3region)
+      s3_client.get_object(bucket: s3bucket,
+                           key: s3filename,
+                           response_target: 'C:\\temp\\evaluate.zip')
+
+    end
+    action :run
+  end
+
+  powershell_script 'unzip zip file' do
+    code <<-EOH
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    function Unzip
+    {
+        param([string]$zipfile, [string]$outpath)
+
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+    }
+    Unzip "C:\\temp\\evaluate.zip" "c:\\temp"
+    EOH
+  end
+
+
+
+end
