@@ -62,7 +62,7 @@ search("aws_opsworks_app").each do |app|
   if app['shortname'] == 'evaluate' && app['app_source']['url'] != ''
     Chef::Log.info("********** RUNNING **********")
 
-    app = search(:aws_opsworks_app).first
+    #app = search(:aws_opsworks_app).first
     app_path = "/srv/#{app['shortname']}"
     uri = URI.parse(app["app_source"]["url"])
     uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
@@ -98,8 +98,8 @@ search("aws_opsworks_app").each do |app|
         Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
 
         #2
-        query = Chef::Search::Query.new
-        app = query.search(:aws_opsworks_app, "type:other").first
+        #query = Chef::Search::Query.new
+        #app = query.search(:aws_opsworks_app, "type:other").first
         s3region = "US-EAST-1"
         s3bucket = s3_bucket
         s3filename = s3_remote_path
