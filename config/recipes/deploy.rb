@@ -59,7 +59,7 @@ Chef::Log.info("********** ********** **********")
 
 
 
-if app['shortname'] = "evaluate" 
+if app['shortname'] == 'evaluate' && app['app_source']['url'] != ''
 
   app = search(:aws_opsworks_app).first
   app_path = "/srv/#{app['shortname']}"
