@@ -83,6 +83,11 @@ search("aws_opsworks_app").each do |app|
     Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
 
 
+    directory "c:\\temp" do        
+      recursive true
+      action :delete
+    end
+    
     directory "c:\\temp" do  
       rights :full_control, 'Administrators', :applies_to_children => true
       rights :write, 'Everyone', :applies_to_children => true
