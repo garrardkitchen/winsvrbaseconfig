@@ -44,7 +44,7 @@ end
 
 
 
-app = search("aws_opsworks_app").first
+app = search("aws_opsworks_app", "self:true").first
 Chef::Log.info("********** ********** **********")
 Chef::Log.info("********** The app's deploy is '#{app['deploy']}' **********")
 Chef::Log.info("********** ********** **********")
