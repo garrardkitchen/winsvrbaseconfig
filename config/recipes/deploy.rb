@@ -59,6 +59,10 @@ search("aws_opsworks_app").each do |app|
   Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
   Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")  
   
+  app["environment"].each do |env|
+    Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
+  end
+  
   if app['shortname'] == 'evaluate' && app['app_source']['url'] != ''
     Chef::Log.info("********** RUNNING **********")
 
