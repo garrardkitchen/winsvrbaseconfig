@@ -19,19 +19,19 @@ Chef::Log.info("********** The RDS db_instance_identifier is '#{rds_db_instance[
 Chef::Log.info("********** STAGE 2 **********")
 
 #app = search("aws_opsworks_app").first
-
-search("aws_opsworks_app").each do |app|
-  Chef::Log.info("********** ********** **********")
-  Chef::Log.info("********** The app's deploy is '#{app['deploy']}' **********")
-  Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
-  Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")  
+ 
+search("aws_opsworks_app").each do |app| 
   
-  app["environment"].each do |env|
-    Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
-  end
-  
-  if app['shortname'] == 'Db' && app['app_source']['url'] != ''
+  if app['shortname'] == 'database' && app['app_source']['url'] != ''
+    
+    app["environment"].each do |env|
+      Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
+    end
+    
     Chef::Log.info("********** RUNNING **********")
+    Chef::Log.info("********** The app's deploy is '#{app['deploy']}' **********")
+    Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
+    Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")  
 
     #app = search(:aws_opsworks_app).first
     app_path = "/srv/#{app['shortname']}"
