@@ -10,6 +10,8 @@ chef_gem "aws-sdk" do
 end
 
 rds_db_instance = search("aws_opsworks_rds_db_instance").first
+
+Chef::Log.info("********** The RDS instance identifier is '#{rds_db_instance['db_instance_identifier']}' **********")
 Chef::Log.info("********** The RDS instance's address is '#{rds_db_instance['address']}' **********")
 Chef::Log.info("********** The RDS user is '#{rds_db_instance['db_user']}' **********")
 Chef::Log.info("********** The RDS port is '#{rds_db_instance['port']}' **********")
@@ -101,8 +103,22 @@ search("aws_opsworks_app").each do |app|
       Unzip "C:\\temp\\db.zip" "c:\\temp"
       EOH
     end
-    
-    Chef::Log.info("********** WILL DEPLOY DACPAC HERE **********")
+
+    Chef::Log.info("********** CREATE install-db.ps1 **********")
+
+    cookbook_file 'c:/temp/db/install-db.ps1' do
+      source 'install-db.ps1'  
+      action :create
+    end
+
+    Chef::Log.info("********** INSTALLING DB **********")
+
+    powershell_script 'install db' do
+      cwd "c:/temp/db"
+      code <<-EOH  
+      .\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}
+      EOH
+    end
 
   else
     Chef::Log.info("********** SKIPPING **********")
