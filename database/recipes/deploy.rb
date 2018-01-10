@@ -104,12 +104,12 @@ search("aws_opsworks_app").each do |app|
       EOH
     end
 
-    Chef::Log.info("********** CREATE install-db.ps1 **********")
+    #Chef::Log.info("********** CREATE install-db.ps1 **********")
 
-    cookbook_file 'c:/temp/db/install-db.ps1' do
-      source 'install-db.ps1'  
-      action :create
-    end
+    #cookbook_file 'c:/temp/db/install-db.ps1' do
+    #  source 'install-db.ps1'  
+    #  action :create
+    #end
 
     Chef::Log.info("********** INSTALLING DB **********")
 
@@ -120,8 +120,8 @@ search("aws_opsworks_app").each do |app|
       EOH
     end
 
-  else
-    Chef::Log.info("********** SKIPPING **********")
+  #else
+  #  Chef::Log.info("********** SKIPPING **********")
   end  
   
 end
