@@ -6,6 +6,6 @@ end
 powershell_script 'install ms sql odbc driver' do
   cwd "c:/temp/db"
   code <<-EOH  
-  .\install-mssqlodbc-driver.ps1
+  .\\install-mssqlodbc-driver.ps1
   EOH
 end
