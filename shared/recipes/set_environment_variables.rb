@@ -12,13 +12,14 @@ ruby_block "get db connection string from ssm parameter store" do
             name: "evaluate-mssql-dev-connstring",
             with_decryption: true
         })
-
-        env "q-db-connstring" do
-            value resp.parameter.value
-        end
+       
     end
     action :run
 end
+
+# env "q-db-connstring" do
+#     value resp.parameter.value
+# end
 
 rds_db_instance = search("aws_opsworks_rds_db_instance").first
 
