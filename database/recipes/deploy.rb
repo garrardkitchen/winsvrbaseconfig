@@ -1,3 +1,6 @@
+Chef::Log.info("***************************************************")
+Chef::Log.info("** DATABASE: DEPLOY START                        **")
+
 time =  Time.new.strftime("%Y%m%d%H%M%S")
 
 Chef::Log.info("********** STAGE 1 **********")
@@ -10,17 +13,6 @@ chef_gem "aws-sdk" do
 end
 
 rds_db_instance = search("aws_opsworks_rds_db_instance").first
-
-Chef::Log.info("********** The RDS instance identifier is '#{rds_db_instance['db_instance_identifier']}' **********")
-Chef::Log.info("********** The RDS instance's address is '#{rds_db_instance['address']}' **********")
-Chef::Log.info("********** The RDS user is '#{rds_db_instance['db_user']}' **********")
-Chef::Log.info("********** The RDS port is '#{rds_db_instance['port']}' **********")
-Chef::Log.info("********** The RDS db_instance_identifier is '#{rds_db_instance['db_instance_identifier']}' **********")
-
-
-Chef::Log.info("********** STAGE 2 **********")
-
-#app = search("aws_opsworks_app").first
  
 search("aws_opsworks_app").each do |app| 
   
@@ -124,4 +116,5 @@ search("aws_opsworks_app").each do |app|
   
 end
 
-Chef::Log.info("********** ********** **********")
+Chef::Log.info("** DATABASE: DEPLOY END                          **")
+Chef::Log.info("***************************************************")
