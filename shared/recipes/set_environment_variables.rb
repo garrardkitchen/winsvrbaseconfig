@@ -27,7 +27,7 @@ env "q-db-dns" do
 end
 
 env "q-db-port" do
-    value rds_db_instance['port']
+    value rds_db_instance['port'].to_s
 end
 
 env "q-db-name" do
