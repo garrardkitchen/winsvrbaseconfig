@@ -14,6 +14,7 @@ Chef::Log.info("** Install mssqlodbc driver")
 cookbook_file 'c:/temp/db/install-mssqlodbc-driver.ps1' do
   source 'install-mssqlodbc-driver.ps1'  
   action :create  
+  not_if "test-path c:/temp/db/install-mssqlodbc-driver.ps1"
 end
 
 powershell_script 'install mssqlodbc driver' do
