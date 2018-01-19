@@ -11,6 +11,18 @@ end
 
 Chef::Log.info("** Install mssqlodbc driver")
 
+directory "c:\\temp" do  
+  rights :full_control, 'Administrators', :applies_to_children => true
+  rights :write, 'Everyone', :applies_to_children => true
+  action :create
+end
+
+directory "c:\\temp\\db" do  
+  rights :full_control, 'Administrators', :applies_to_children => true
+  rights :write, 'Everyone', :applies_to_children => true
+  action :create
+end
+
 cookbook_file 'c:/temp/db/install-mssqlodbc-driver.ps1' do
   source 'install-mssqlodbc-driver.ps1'  
   action :create  
