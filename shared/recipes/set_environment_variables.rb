@@ -28,14 +28,14 @@ ruby_block "get db connection string from ssm parameter store" do
             with_decryption: true
         })
         
-        billing_api_key = resp.parameter.value
+        ENV['q-api-key'] = resp.parameter.value
     end
     action :run
 end
 
-env "q-api-key" do
-    value billing_api_key
-end
+# env "q-api-key" do
+#     value billing_api_key
+# end
 
 # env "q-db-connstring" do
 #     value resp.parameter.value
