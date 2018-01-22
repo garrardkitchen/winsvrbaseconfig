@@ -5,19 +5,19 @@ Chef::Log.info("** DATABASE: BOOTSTRAP START                     **")
 
 include_recipe 'shared::set_environment_variables'
 
-# map the environment_variables node to ENV
-node[:deploy].each do |application, deploy|
-  hef::Log.info("app: #{application}")       
-  if application == "database" && deploy[:environment_variables].any?
-      deploy[:environment_variables].each do |key, value|
-          Chef::Log.info("  [#{application}][#{key}] = #{value}")        
-      end
-  end
+# powershell_script 'output env vars' do
+#   code "Get-ChildItem Env:"
+# end
+
+Chef::Log.info("** SHARED: ENV VARS START")
+
+ENV.each_pair do |k, v|
+    Chef::Log.info("ENV['#{k}'] = '#{v}'")
 end
 
+Chef::Log.info("** SHARED: ENV VARS END")
 
 Chef::Log.info("** Install mssqlodbc driver")
-
 
 directory "c:\\temp" do  
   rights :full_control, 'Administrators', :applies_to_children => true

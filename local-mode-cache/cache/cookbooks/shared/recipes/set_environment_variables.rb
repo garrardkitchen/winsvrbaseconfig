@@ -70,16 +70,3 @@ env "q-delete-me-2" do
     action :create
 end
 
-Chef::Log.info("** SHARED: ENV VARS START")
-
-ENV.each_pair do |k, v|
-    Chef::Log.info("ENV['#{k}'] = '#{v}'")
-end
-
-Chef::Log.info("** SHARED: ENV VARS END")
-
-
-
-# Chef::Log.info("Q_TEMP_1: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_1']}")
-# Chef::Log.info("Q_TEMP_2: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_2']}")
-# Chef::Log.info("Q_TEMP_3: #{node[:deploy]['Database']['environment_variables']['Q_TEMP_3']}")
