@@ -12,13 +12,13 @@ ruby_block "get db connection string from ssm parameter store" do
             name: "evaluate-mssql-dev-connstring",
             with_decryption: true
         })
-        ENV['q-db-connstring'] = resp.parameter.value
-       
+        Chef::Log.info(" connstring = #{resp.parameter.value}")
+        ENV['q-db-connstring'] = resp.parameter.value       
     end
     action :run
 end
 
-ruby_block "get db connection string from ssm parameter store" do
+ruby_block "get billing api key from ssm parameter store" do
     block do
         require 'aws-sdk'
         Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
@@ -27,8 +27,8 @@ ruby_block "get db connection string from ssm parameter store" do
             name: "evaluate-billing-api-key",
             with_decryption: true
         })
-        
-        ENV['q-api-key'] = resp.parameter.value
+        Chef::Log.info(" billing api-key = #{resp.parameter.value}")
+        ENV['q-billing-api-key'] = resp.parameter.value
     end
     action :run
 end
