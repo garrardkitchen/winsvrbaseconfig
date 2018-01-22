@@ -6,8 +6,20 @@ Chef::Log.info("** DATABASE: BOOTSTRAP START                     **")
 include_recipe 'shared::set_environment_variables'
 
 
+# app = search("aws_opsworks_app", "shortname:database").first
+
+#   Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
+#   Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")
+# end
 
 
+
+
+
+#     deploy[:environment_variables].each do |key, value|
+#         Chef::Log.info("  [#{application}][#{key}] = #{value}")        
+#     end
+# end
 
 
 # # map the environment_variables node to ENV
