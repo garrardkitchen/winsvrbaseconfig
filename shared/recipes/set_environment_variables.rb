@@ -70,3 +70,9 @@ env "q-delete-me-2" do
     action :create
 end
 
+
+app = search("aws_opsworks_app","Database").first
+
+app[:environment].each do |k|v|
+    Chef::Log.info(" #{k} : #{v}")
+end
