@@ -4,7 +4,7 @@ chef_gem "aws-sdk" do
 end
 
 ruby_block "get db connection string from ssm parameter store" do
-    block do
+    block do        
         require 'aws-sdk'
         Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
         ssm = Aws::SSM::Client.new(region: "us-east-1")
@@ -14,6 +14,7 @@ ruby_block "get db connection string from ssm parameter store" do
         })
         Chef::Log.info(" connstring = #{resp.parameter.value}")
         ENV['q-db-connstring'] = resp.parameter.value       
+        ENV['q-delete-me-1'] = "DELETE ME 1"
     end
     action :run
 end
@@ -63,10 +64,9 @@ env "q-db-sys-password" do
     value rds_db_instance['db_password']
 end
 
-Chef::Log.info("** SHARED: ENV VARS START")
-
-ENV.each_pair do |k, v|
-    Chef::Log.info("ENV['#{k}'] = '#{v}'")
+env "q-delete-me-2" do
+    value "DELETE ME 2"
+    key_name "q-delete-me-2a"
+    action :create
 end
 
-Chef::Log.info("** SHARED: ENV VARS END")
