@@ -78,6 +78,13 @@ end
 
 Chef::Log.info("** SHARED: ENV VARS END")
 
-Chef::Log.info("Q_TEMP_1: #{node[:deploy]['Database'][:environment_variables][:Q_TEMP_1]}")
-Chef::Log.info("Q_TEMP_2: #{node[:deploy]['Database'][:environment_variables][:Q_TEMP_2]}")
-Chef::Log.info("Q_TEMP_3: #{node[:deploy]['Database'][:environment_variables][:Q_TEMP_3]}")
+# map the environment_variables node to ENV
+node[:deploy].each do |application, deploy|
+    deploy[:environment_variables].each do |key, value|
+        Chef::Log.info("[#{key}] = #{value}")        
+    end
+end
+
+# Chef::Log.info("Q_TEMP_1: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_1']}")
+# Chef::Log.info("Q_TEMP_2: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_2']}")
+# Chef::Log.info("Q_TEMP_3: #{node[:deploy]['Database']['environment_variables']['Q_TEMP_3']}")
