@@ -86,12 +86,19 @@ Chef::Log.info("** SHARED: ENV VARS END")
 
 search("aws_opsworks_app").each do |app|     
     if app['shortname'] == 'database'     
-        app["environment"].each do |env|
-            Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
+        app["environment"].each do |k|v|
+            Chef::Log.info("   >>>> The env: '#{k} is '#{v}' <<<<")  
         end
     end
 end
-    
+
+db_app = search("aws_opsworks_app", "shortname:database").first
+ep1 = db_app["environment"]["Q_TEMP_1"]
+ep2 = db_app["environment"]["Q_TEMP_2"]
+ep3 = db_app["environment"]["Q_TEMP_3"]
+Chef::Log.info(" Q_TEMP_1 = #{ep1}  ")  
+Chef::Log.info(" Q_TEMP_2 = #{ep2}  ")  
+Chef::Log.info(" Q_TEMP_3 = #{ep3}  ")  
 
 # Chef::Log.info("Q_TEMP_1: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_1']}")
 # Chef::Log.info("Q_TEMP_2: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_2']}")
