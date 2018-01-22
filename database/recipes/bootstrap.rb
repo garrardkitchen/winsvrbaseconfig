@@ -5,36 +5,7 @@ Chef::Log.info("** DATABASE: BOOTSTRAP START                     **")
 
 include_recipe 'shared::set_environment_variables'
 
-
-# app = search("aws_opsworks_app", "shortname:database").first
-
-#   Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
-#   Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")
-# end
-
-
-
-
-
-#     deploy[:environment_variables].each do |key, value|
-#         Chef::Log.info("  [#{application}][#{key}] = #{value}")        
-#     end
-# end
-
-
-# # map the environment_variables node to ENV
-# node[:deploy].each do |application, deploy|
-#   Chef::Log.info("app: #{application}")       
-#   if application == "database" && deploy[:environment_variables].any?
-#       deploy[:environment_variables].each do |key, value|
-#           Chef::Log.info("  [#{application}][#{key}] = #{value}")        
-#       end
-#   end
-# end
-
-
 Chef::Log.info("** Install mssqlodbc driver")
-
 
 directory "c:\\temp" do  
   rights :full_control, 'Administrators', :applies_to_children => true
