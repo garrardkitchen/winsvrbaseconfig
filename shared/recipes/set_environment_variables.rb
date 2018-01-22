@@ -81,7 +81,7 @@ Chef::Log.info("** SHARED: ENV VARS END")
 # map the environment_variables node to ENV
 node[:deploy].each do |application, deploy|
     deploy[:environment_variables].each do |key, value|
-        Chef::Log.info("[#{key}] = #{value}")        
+        Chef::Log.info("[#{application}][#{key}] = #{value}")        
     end
 end
 
