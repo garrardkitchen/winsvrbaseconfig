@@ -2,7 +2,7 @@ chef_gem "aws-sdk" do
     compile_time false
     action :install
 end
-  
+
 ruby_block "get db connection string from ssm parameter store" do
     block do
         require 'aws-sdk'
@@ -12,9 +12,29 @@ ruby_block "get db connection string from ssm parameter store" do
             name: "evaluate-mssql-dev-connstring",
             with_decryption: true
         })
+        ENV['q-db-connstring'] = resp.parameter.value
        
     end
     action :run
+end
+
+ruby_block "get db connection string from ssm parameter store" do
+    block do
+        require 'aws-sdk'
+        Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
+        ssm = Aws::SSM::Client.new(region: "us-east-1")
+        resp = ssm.get_parameter({
+            name: "evaluate-billing-api-key",
+            with_decryption: true
+        })
+        
+        billing_api_key = resp.parameter.value
+    end
+    action :run
+end
+
+env "q-api-key" do
+    value billing_api_key
 end
 
 # env "q-db-connstring" do
@@ -43,3 +63,10 @@ env "q-db-sys-password" do
     value rds_db_instance['db_password']
 end
 
+Chef::Log.info("** SHARED: ENV VARS START")
+
+ENV.each_pair do |k, v|
+    Chef::Log.info("ENV['#{k}'] = '#{v}'")
+end
+
+Chef::Log.info("** SHARED: ENV VARS END")
