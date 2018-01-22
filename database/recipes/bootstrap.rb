@@ -7,7 +7,7 @@ include_recipe 'shared::set_environment_variables'
 
 # map the environment_variables node to ENV
 node[:deploy].each do |application, deploy|
-  hef::Log.info("app: #{application}")       
+  Chef::Log.info("app: #{application}")       
   if application == "database" && deploy[:environment_variables].any?
       deploy[:environment_variables].each do |key, value|
           Chef::Log.info("  [#{application}][#{key}] = #{value}")        
