@@ -78,7 +78,11 @@ end
 
 Chef::Log.info("** SHARED: ENV VARS END")
 
+app = search("aws_opsworks_app", "shortname:database").first
 
+app[:environment_variables].each do |key, value|
+    Chef::Log.info("[#{key}] = #{value}")        
+end
 
 # Chef::Log.info("Q_TEMP_1: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_1']}")
 # Chef::Log.info("Q_TEMP_2: #{node[:deploy]['Database'][:environment_variables]['Q_TEMP_2']}")

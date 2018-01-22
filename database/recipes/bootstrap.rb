@@ -5,15 +5,20 @@ Chef::Log.info("** DATABASE: BOOTSTRAP START                     **")
 
 include_recipe 'shared::set_environment_variables'
 
-# map the environment_variables node to ENV
-node[:deploy].each do |application, deploy|
-  Chef::Log.info("app: #{application}")       
-  if application == "database" && deploy[:environment_variables].any?
-      deploy[:environment_variables].each do |key, value|
-          Chef::Log.info("  [#{application}][#{key}] = #{value}")        
-      end
-  end
-end
+
+
+
+
+
+# # map the environment_variables node to ENV
+# node[:deploy].each do |application, deploy|
+#   Chef::Log.info("app: #{application}")       
+#   if application == "database" && deploy[:environment_variables].any?
+#       deploy[:environment_variables].each do |key, value|
+#           Chef::Log.info("  [#{application}][#{key}] = #{value}")        
+#       end
+#   end
+# end
 
 
 Chef::Log.info("** Install mssqlodbc driver")
