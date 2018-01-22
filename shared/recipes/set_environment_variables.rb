@@ -87,7 +87,8 @@ Chef::Log.info("** SHARED: ENV VARS END")
 search("aws_opsworks_app").each do |app|     
     if app['shortname'] == 'database'     
         app["environment"].each do |env|
-        Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
+            Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
+        end
     end
 end
     
