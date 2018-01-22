@@ -71,8 +71,7 @@ env "q-delete-me-2" do
 end
 
 
-app = search("aws_opsworks_app","Database").first
 
-app[:environment].each do |k|v|
-    Chef::Log.info(" #{k} : #{v}")
-end
+Chef::Log.info("Q_TEMP_1: #{node[:deploy]['database'][:environment_variables][:Q_TEMP_1]}")
+Chef::Log.info("Q_TEMP_2: #{node[:deploy]['database'][:environment_variables][:Q_TEMP_2]}")
+Chef::Log.info("Q_TEMP_3: #{node[:deploy]['database'][:environment_variables][:Q_TEMP_3]}")
