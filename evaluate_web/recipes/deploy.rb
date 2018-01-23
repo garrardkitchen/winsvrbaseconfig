@@ -1,11 +1,35 @@
 Chef::Log.info("***************************************************")
-Chef::Log.info("** DATABASE: DEPLOY START                        **")
+Chef::Log.info("** EVALUATE WEB: DEPLOY START                    **")
 
-APP_NAME = "db"
+APP_NAME = "evaluate_web"
 
 time =  Time.new.strftime("%Y%m%d%H%M%S")
 
+file "c:\\inetpub\\wwwroot\\status.html" do
+  content IO.binread("C:\\chef\\cookbooks\\status.html")
+  action  :create
+end
+
+#windowsserver = search(:aws_opsworks_instance, "hostname:web*").first
 instance = search("aws_opsworks_instance", "self:true").first
+Chef::Log.info("**********The public IP address is: '#{instance[:public_ip]}'**********")
+Chef::Log.info("**********The private IP address is: '#{instance[:private_ip]}'**********")
+Chef::Log.info("**********The ec2_instance_id is: '#{instance[:ec2_instance_id]}'**********")
+Chef::Log.info("**********The availability_zone is: '#{instance[:availability_zone]}'**********")
+Chef::Log.info("**********The hostname is: '#{instance[:hostname]}'**********")
+Chef::Log.info("**********The time is: '#{time}'**********")
+
+template "c:\\inetpub\\wwwroot\\index.html" do
+  source "index.erb"
+  variables(
+    time: time,
+    instance_id: instance[:ec2_instance_id],
+    id: instance[:instance_id],
+    ip: instance[:private_ip],
+    az: instance[:availability_zone],
+    host_name: instance[:hostname]
+    )
+end
 
 chef_gem "aws-sdk" do
   compile_time false
@@ -20,7 +44,7 @@ if node['allow_changes'] == true
 
   search("aws_opsworks_app").each do |app| 
     
-    if app['shortname'] == 'database' && app['app_source']['url'] != ''
+    if app['shortname'] == APP_NAME && app['app_source']['url'] != ''
       
       app["environment"].each do |env|
         Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
@@ -43,10 +67,11 @@ if node['allow_changes'] == true
 
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        code ". c:\temp\db\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
+        #code ". c:\temp\db\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
+
     #else
     #  Chef::Log.info("********** SKIPPING **********")
     end  
@@ -57,5 +82,5 @@ else
   Chef::Log.info("** Not allowing changes")
 end
 
-Chef::Log.info("** DATABASE: DEPLOY END                          **")
+Chef::Log.info("** EVALUATE WEB: DEPLOY END                      **")
 Chef::Log.info("***************************************************")

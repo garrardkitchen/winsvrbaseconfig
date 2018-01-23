@@ -1,5 +1,5 @@
 Chef::Log.info("***************************************************")
-Chef::Log.info("** SEED: CONFIGURE START                         **")
+Chef::Log.info("** EVALUATE-WEB: CONFIGURE START                 **")
 
-Chef::Log.info("** SEED: CONFIGURE END                           **")
+Chef::Log.info("** EVALUATE-WEB: CONFIGURE END                   **")
 Chef::Log.info("***************************************************")

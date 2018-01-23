@@ -1,77 +1,62 @@
 Chef::Log.info("***************************************************")
-Chef::Log.info("** SEED: BOOTSTRAP START                         **")
+Chef::Log.info("** SEED: DEPLOY START                            **")
+
+APP_NAME = "seed"
 
 time =  Time.new.strftime("%Y%m%d%H%M%S")
+
+instance = search("aws_opsworks_instance", "self:true").first
 
 chef_gem "aws-sdk" do
   compile_time false
   action :install
 end
 
-app = search("aws_opsworks_app", "shortname:seed").first
-app_name = "seed" 
+rds_db_instance = search("aws_opsworks_rds_db_instance").first
+ 
+if node['allow_changes'] == true 
 
-if app['shortname'] == 'evaluate' && app['app_source']['url'] != ''
-  
-  uri = URI.parse(app["app_source"]["url"])
-  uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
-  virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
-  s3_base_uri = uri.dup
+  Chef::Log.info("** Allowing changes")
 
-  if virtual_host_match
-    s3_bucket = virtual_host_match[1]
-    s3_base_uri.path = "/"
-  else
-    s3_bucket = uri_path_components[0]
-    s3_base_uri.path = "/#{uri_path_components.shift}"
+  search("aws_opsworks_app").each do |app| 
+    
+    if app['shortname'] == APP_NAME && app['app_source']['url'] != ''
+      
+      app["environment"].each do |env|
+        Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
+      end
+      
+      Chef::Log.info("********** RUNNING **********")
+      Chef::Log.info("********** The app's deploy is '#{app['deploy']}' **********")
+      Chef::Log.info("********** The app's short name is '#{app['shortname']}' **********")
+      Chef::Log.info("********** The app's URL is '#{app['app_source']['url']}' **********")  
+
+      #app = search(:aws_opsworks_app).first      
+
+      create_folder("c:\\temp")
+
+      get_remote_file(URI.parse(app["app_source"]["url"]),"US-EAST-1","c:\\temp\\#{APP_NAME}.zip")
+
+      unzip_file("c:\\temp\\#{APP_NAME}.zip", "c:\\temp")
+      
+      Chef::Log.info("********** INSTALLING #{APP_NAME} **********")
+
+      powershell_script 'install db' do
+        cwd "c:/temp/#{APP_NAME}"
+        #code ". c:\temp\db\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
+      end
+
+      Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
+
+    #else
+    #  Chef::Log.info("********** SKIPPING **********")
+    end  
+    
   end
 
-  s3_remote_path = uri_path_components.join("/")
-  Chef::Log.info("**********The uri is: '#{uri}'**********")
-  Chef::Log.info("**********The s3_remote_path is: '#{s3_remote_path}'**********")
-  Chef::Log.info("**********The s3_bucket is: '#{s3_bucket}'**********")
+else
+  Chef::Log.info("** Not allowing changes")
+end
 
-  directory "c:\\temp" do  
-    rights :full_control, 'Administrators', :applies_to_children => true
-    rights :write, 'Everyone', :applies_to_children => true
-    action :create
-  end
-
-  ruby_block "download-object" do
-    block do
-      require 'aws-sdk'
-
-      #1
-      Aws.config[:ssl_ca_bundle] = 'C:\ProgramData\Git\bin\curl-ca-bundle.crt'
-
-      #2
-      s3region = "US-EAST-1"
-      s3bucket = s3_bucket
-      s3filename = s3_remote_path
-
-      #3
-      s3_client = Aws::S3::Client.new(region: s3region)
-      s3_client.get_object(bucket: s3bucket,
-                            key: s3filename,
-                            response_target: 'C:\\temp\\#{app_name}.zip')
-
-    end
-    action :run
-  end
-
-  powershell_script 'unzip zip file' do
-    code <<-EOH
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    function Unzip
-    {
-        param([string]$zipfile, [string]$outpath)
-
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
-    }
-    Unzip "C:\\temp\\#{app_name}.zip" "c:\\temp"
-    EOH
-  end
-end  
-
-Chef::Log.info("** SEED: BOOTSTRAP END                           **")
+Chef::Log.info("** SEED: DEPLOY END                              **")
 Chef::Log.info("***************************************************")

@@ -1,4 +1,4 @@
-name 'seed'
+name 'tms_api'
 maintainer 'Qualtrak'
 maintainer_email 'garrard.kitchen@qualtrak.com'
 license 'All Rights Reserved'

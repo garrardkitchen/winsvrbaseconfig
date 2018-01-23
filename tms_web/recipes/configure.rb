@@ -1,5 +1,5 @@
 Chef::Log.info("***************************************************")
-Chef::Log.info("** SEED: CONFIGURE START                         **")
+Chef::Log.info("** TMS WEB: CONFIGURE START                      **")
 
-Chef::Log.info("** SEED: CONFIGURE END                           **")
+Chef::Log.info("** TMS WEB: CONFIGURE END                        **")
 Chef::Log.info("***************************************************")

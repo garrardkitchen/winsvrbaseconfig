@@ -1,4 +1,4 @@
-name 'evaluate-web'
+name 'tms_web'
 maintainer 'Qualtrak'
 maintainer_email 'garrard.kitchen@qualtrak.com'
 license 'All Rights Reserved'

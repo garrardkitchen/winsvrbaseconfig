@@ -1,4 +1,4 @@
-name 'seed'
+name 'status_web'
 maintainer 'Qualtrak'
 maintainer_email 'garrard.kitchen@qualtrak.com'
 license 'All Rights Reserved'
