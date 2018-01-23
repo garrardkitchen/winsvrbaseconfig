@@ -2,6 +2,7 @@ Chef::Log.info("***************************************************")
 Chef::Log.info("** DATABASE: DEPLOY START                        **")
 
 APP_NAME = "db"
+REGION = node['region']
 
 time =  Time.new.strftime("%Y%m%d%H%M%S")
 
@@ -43,7 +44,7 @@ if node['allow_changes'] == true
 
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        code ". c:\temp\db\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
+        code ". c:/temp/#{APP_NAME}/install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']} -region #{REGION}"
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")

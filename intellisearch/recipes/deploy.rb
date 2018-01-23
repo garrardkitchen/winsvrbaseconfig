@@ -2,6 +2,7 @@ Chef::Log.info("***************************************************")
 Chef::Log.info("** INTELLISEARCH: DEPLOY START                   **")
 
 APP_NAME = "intellisearch"
+REGION = node['region']
 
 time =  Time.new.strftime("%Y%m%d%H%M%S")
 
@@ -43,7 +44,7 @@ if node['allow_changes'] == true
 
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        #code ". c:\temp\db\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
+        code ". c:/temp/#{APP_NAME}/deploy/intellisearchDeploy.ps1 -region #{REGION}"        
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
