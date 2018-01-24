@@ -1,7 +1,7 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** DATABASE: DEPLOY START                        **")
 
-APP_NAME = "db"
+APP_NAME = "database"
 REGION = node['region']
 
 time =  Time.new.strftime("%Y%m%d%H%M%S")
@@ -21,7 +21,7 @@ if node['allow_changes'] == true
 
   search("aws_opsworks_app").each do |app| 
     
-    if app['shortname'] == 'database' && app['app_source']['url'] != ''
+    if app['shortname'] == APP_NAME && app['app_source']['url'] != ''
       
       app["environment"].each do |env|
         Chef::Log.info("   >>>> The env: '#{env}' is '#{app['environment'][env]}' <<<<")  
@@ -44,7 +44,7 @@ if node['allow_changes'] == true
 
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        code ". c:/temp/#{APP_NAME}/install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']} -region #{REGION}"
+        code ". c:/temp/#{APP_NAME}/install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")

@@ -44,7 +44,7 @@ if node['allow_changes'] == true
 
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        code ". c:/temp/#{APP_NAME}/deploy/seedDeploy.ps1 -region #{REGION}"        
+        code ". c:/temp/#{APP_NAME}/deploy/Install-Seed.ps1 -Region #{REGION} -ErrorAction Stop"        
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")

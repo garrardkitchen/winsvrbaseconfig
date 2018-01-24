@@ -44,7 +44,7 @@ if node['allow_changes'] == true
 
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        code ". c:/temp/#{APP_NAME}/deploy/billingDeploy.ps1 -region #{REGION}"
+        code ". c:/temp/#{APP_NAME}/deploy/Install-Billing.ps1 -Region #{REGION} -ErrorAction Stop"
         #code ". c:\temp\db\install-db.ps1 -DbName #{rds_db_instance['db_instance_identifier']} -DbDns #{rds_db_instance['address']} -DbLoginName #{rds_db_instance['db_user']} -DbPassword #{rds_db_instance['db_password']}"
       end
 
