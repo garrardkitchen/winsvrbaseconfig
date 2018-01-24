@@ -56,10 +56,11 @@ if node['allow_changes'] == true
     #app = search(:aws_opsworks_app).first      
 
     create_folder("c:\\temp")
+    create_folder("c:\\temp\\#{APP_NAME}")
 
     get_remote_file(URI.parse(app["app_source"]["url"]),"US-EAST-1","c:\\temp\\#{APP_NAME}.zip")
 
-    unzip_file("c:\\temp\\#{APP_NAME}.zip", "c:\\temp")
+    unzip_file("c:\\temp\\#{APP_NAME}.zip", "c:\\temp\\#{APP_NAME}")
     
     Chef::Log.info("********** INSTALLING #{APP_NAME} **********")
 
