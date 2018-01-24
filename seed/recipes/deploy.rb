@@ -1,26 +1,22 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** SEED: DEPLOY START                            **")
 
-APP_NAME = "seed"
-REGION = node['region']
-
-time =  Time.new.strftime("%Y%m%d%H%M%S")
-
-instance = search("aws_opsworks_instance", "self:true").first
-
 chef_gem "aws-sdk" do
   compile_time false
   action :install
 end
 
+APP_NAME = "seed"
+REGION = node['region']
+app = search("aws_opsworks_app","deploy:true").first
+time =  Time.new.strftime("%Y%m%d%H%M%S")
+instance = search("aws_opsworks_instance", "self:true").first
 rds_db_instance = search("aws_opsworks_rds_db_instance").first
  
 if node['allow_changes'] == true 
 
   Chef::Log.info("** Allowing changes")
-
-  search("aws_opsworks_app").each do |app| 
-    
+   
     if app['shortname'] == APP_NAME && app['app_source']['url'] != ''
       
       app["environment"].each do |env|
@@ -49,12 +45,8 @@ if node['allow_changes'] == true
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
 
-    #else
-    #  Chef::Log.info("********** SKIPPING **********")
     end  
-    
-  end
-
+ 
 else
   Chef::Log.info("** Not allowing changes")
 end
