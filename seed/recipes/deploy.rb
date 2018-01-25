@@ -39,9 +39,11 @@ if node['allow_changes'] == true
       
       Chef::Log.info("********** INSTALLING #{APP_NAME} **********")
 
+      SEED = get_private_ip() + ":9000"
+
       powershell_script 'install db' do
         cwd "c:/temp/#{APP_NAME}"
-        code ". c:/temp/#{APP_NAME}/deploy/Install-Seed.ps1 -Region #{REGION} -ErrorAction Stop"        
+        code ". c:/temp/#{APP_NAME}/deploy/Install-Seed.ps1 -Region #{REGION} -SeedIPs #{SEED} -ErrorAction Stop"        
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")

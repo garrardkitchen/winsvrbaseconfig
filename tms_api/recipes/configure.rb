@@ -1,12 +1,12 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** TMS API: CONFIGURE START                      **")
 
-APP_NAME = "tms_web"
+APP_NAME = "tms_api"
 UPDATE_PS = "Install-TMS.ps1"
 SEEDS = get_list_of_seeds()
 Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS}")
 
-powershell_script 'Update Seeds for #{APP_NAME}' do
+powershell_script 'Update Seed IPs' do
     cwd "c:/temp/#{APP_NAME}"
     #code ". c:/temp/#{APP_NAME}/deploy/#{UPDATE_PS} -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
 end

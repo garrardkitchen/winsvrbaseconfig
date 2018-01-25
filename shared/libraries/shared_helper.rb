@@ -83,27 +83,27 @@ module Shared_helper
         true
     end
 
-    def get_list_of_seeds ()
-        
-        app = search("aws_opsworks_app","deploy:true").first
-
-        if app['shortname'] == "seed"
-            # first get local ip add
-            layer = search("aws_opsworks_layer","shortname:seed").first
-            seeds = []
-            search("aws_opsworks_instance").each do |instance|        
-                if instance['layer_ids'].include?(layer['layer_id'])
-                    seeds.push(instance['private_ip']+":9000")
-                end
-            end
-
-            # build seed list to pass to Update Seed PS script
-            if seeds.length > 0
-                seeds.join(",")                
-            else
-                ""
+    def get_list_of_seeds ()       
+        # first get local ip add
+        layer = search("aws_opsworks_layer","shortname:seed").first
+        seeds = []
+        search("aws_opsworks_instance").each do |instance|        
+            if instance['layer_ids'].include?(layer['layer_id'])
+                seeds.push(instance['private_ip']+":9000")
             end
         end
+
+        # build seed list to pass to Update Seed PS script
+        if seeds.length > 0
+            seeds.join(",")                
+        else
+            ""
+        end    
+    end
+
+    def get_private_ip()
+        instance = search("aws_opsworks_instance","self:true").first
+        instance['private_ip']
     end
 end
 
