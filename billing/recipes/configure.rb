@@ -1,7 +1,7 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** BILLING: CONFIGURE START                      **")
 
-APP_NAME = "tms_web"
+APP_NAME = "billing"
 SEEDS = get_list_of_seeds()
 Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS}")
 

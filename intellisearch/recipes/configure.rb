@@ -1,7 +1,7 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** INTELLISEARCH: CONFIGURE START                **")
 
-APP_NAME = "tms_web"
+APP_NAME = "intellisearch"
 SEEDS = get_list_of_seeds()
 Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS}")
 
