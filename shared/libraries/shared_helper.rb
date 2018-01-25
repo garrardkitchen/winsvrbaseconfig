@@ -3,7 +3,14 @@ module Shared_helper
     #include Chef::Mixin::ShellOut
 
     # create_folder ("c:\\temp")
-    def create_folder(name)
+    def create_folder(name, delete_first = false)
+
+        if delete_first 
+            directory name do 
+                recursive true                 
+                action :delete
+            end
+        end
 
         directory name do  
             rights :full_control, 'Administrators', :applies_to_children => true
