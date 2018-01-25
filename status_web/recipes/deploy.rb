@@ -39,9 +39,11 @@ if node['allow_changes'] == true
     
     Chef::Log.info("********** INSTALLING #{APP_NAME} **********")
 
+    SEEDS = get_list_of_seeds()
+    
     powershell_script 'install db' do
       cwd "c:/temp/#{APP_NAME}"
-      code ". c:/temp/#{APP_NAME}/deploy/Install-StatusWeb.ps1 -Region #{REGION} -ErrorAction Stop"        
+      code ". c:/temp/#{APP_NAME}/deploy/Install-StatusWeb.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
     end
 
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")

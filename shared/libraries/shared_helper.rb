@@ -1,9 +1,9 @@
 module Shared_helper    
   
-      #include Chef::Mixin::ShellOut
-  
-      # create_folder ("c:\\temp")
-      def create_folder(name)
+    #include Chef::Mixin::ShellOut
+
+    # create_folder ("c:\\temp")
+    def create_folder(name)
 
         directory name do  
             rights :full_control, 'Administrators', :applies_to_children => true
@@ -12,11 +12,11 @@ module Shared_helper
         end
 
         true
-      end
+    end
 
-      # get_remote_file(app["app_source"]["url"], "US-EAST-1", "C:\\temp\\#{app_name}.zip")
-      def get_remote_file(uri, s3region, to_where)
-        
+    # get_remote_file(app["app_source"]["url"], "US-EAST-1", "C:\\temp\\#{app_name}.zip")
+    def get_remote_file(uri, s3region, to_where)
+    
         uri_path_components = uri.path.split("/").reject{ |p| p.empty? }
         virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
         s3_base_uri = uri.dup
@@ -56,10 +56,10 @@ module Shared_helper
         end
 
         true
-      end      
-    
-      # unzip_file("C:\\temp\\#{app_name}.zip", "c:\\temp")
-      def unzip_file(file, to_where) 
+    end      
+
+    # unzip_file("C:\\temp\\#{app_name}.zip", "c:\\temp")
+    def unzip_file(file, to_where) 
         powershell_script 'unzip zip file' do
             code <<-EOH
             Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -74,6 +74,29 @@ module Shared_helper
         end
 
         true
+    end
+
+    def get_list_of_seeds ()
+        
+        app = search("aws_opsworks_app","deploy:true").first
+
+        if app['shortname'] == "seed"
+            # first get local ip add
+            layer = search("aws_opsworks_layer","shortname:seed").first
+            seeds = []
+            search("aws_opsworks_instance").each do |instance|        
+                if instance['layer_ids'].include?(layer['layer_id'])
+                    seeds.push(instance['private_ip']+":9000")
+                end
+            end
+
+            # build seed list to pass to Update Seed PS script
+            if seeds.length > 0
+                seeds.join(",")                
+            else
+                ""
+            end
+        end
     end
 end
 
