@@ -4,7 +4,7 @@ Chef::Log.info("** INTELLISEARCH: CONFIGURE START                **")
 APP_NAME = "tms_web"
 UPDATE_PS = "Install-IntelliSearch.ps1"
 SEEDS = get_list_of_seeds()
-Chef::Log.info("List of seeds for #{APP_NAME} = #{seeds.join(',')}")
+Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS.join(',')}")
 
 powershell_script 'Update Seeds for #{APP_NAME}' do
     cwd "c:/temp/#{APP_NAME}"
