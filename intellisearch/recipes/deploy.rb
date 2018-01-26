@@ -43,11 +43,10 @@ if node['allow_changes'] == true
 
     powershell_script 'install IntelliSearch' do
       cwd "c:/temp/#{APP_NAME}"
-      code ". c:/temp/#{APP_NAME}/deploy/Install-IntelliSearch.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
+      code ". c:/temp/#{APP_NAME}/deploy/Install-IntelliSearch.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
     end
 
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
-
   
   end  
     

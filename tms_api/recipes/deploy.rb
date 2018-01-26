@@ -43,7 +43,7 @@ if node['allow_changes'] == true
 
     powershell_script 'install TMS API' do
       cwd "c:/temp/#{APP_NAME}"
-      code ". c:/temp/#{APP_NAME}/deploy/Install-TMS.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
+      code ". c:/temp/#{APP_NAME}/deploy/Install-TMS.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
     end
 
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
