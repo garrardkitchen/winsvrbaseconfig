@@ -1,7 +1,8 @@
 Chef::Log.info("** BOOTSTRAP START                      **")
 
-windows_package 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi' do    
+windows_package 'AWS Command Line Interface' do    
   source "https://s3.amazonaws.com/aws-cli/AWSCLI64.msi"
+  options '/quiet /passive /qn'
 end
 
 powershell_script 'Install IIS' do
