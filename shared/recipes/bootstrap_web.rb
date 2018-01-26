@@ -1,5 +1,6 @@
 Chef::Log.info("** BOOTSTRAP START                      **")
 
+create_folder("c:\\temp")
 
 remote_file 'c:/temp/AWSCLI64.msi' do
   source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'
