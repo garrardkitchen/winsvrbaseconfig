@@ -1,7 +1,7 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** TMS WEB: BOOTSTRAP START                      **")
 
-APP_NAME = "tms_web"
+APP_NAME = "tms-web"
 app = search("aws_opsworks_app","deploy:true").first
 
 if app['shortname'] == APP_NAME 

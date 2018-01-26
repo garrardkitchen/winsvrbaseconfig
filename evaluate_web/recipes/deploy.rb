@@ -6,7 +6,7 @@ chef_gem "aws-sdk" do
   action :install
 end
 
-APP_NAME = "evaluate_web"
+APP_NAME = "evaluate-web"
 REGION = node['region']
 app = search("aws_opsworks_app","deploy:true").first
 time =  Time.new.strftime("%Y%m%d%H%M%S")
