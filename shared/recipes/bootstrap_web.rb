@@ -1,8 +1,7 @@
 Chef::Log.info("** BOOTSTRAP START                      **")
 
-windows_package 'aws cli' do    
-  source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'    
-  action :install
+windows_package 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi' do    
+  source "https://s3.amazonaws.com/aws-cli/AWSCLI64.msi"
 end
 
 powershell_script 'Install IIS' do
