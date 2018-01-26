@@ -1,7 +1,7 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** EVALUATE-WEB: CONFIGURE START                 **")
 
-APP_NAME = "evaluate-web"
+APP_NAME = "evaluate_web"
 SEEDS = get_list_of_seeds()
 Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS}")
 

@@ -1,7 +1,7 @@
 Chef::Log.info("***************************************************")
 Chef::Log.info("** TMS WEB: CONFIGURE START                      **")
 
-APP_NAME = "tms-web"
+APP_NAME = "tms_web"
 SEEDS = get_list_of_seeds()
 Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS}")
 
