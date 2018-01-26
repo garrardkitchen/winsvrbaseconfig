@@ -52,6 +52,12 @@ powershell_script 'Install IIS' do
     not_if "(Get-WindowsFeature -Name  Web-AppInit).Installed"
   end
   
+  windows_package 'aws cli' do    
+    installer_type :msi    
+    source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'    
+    action :install
+  end
+
   service 'w3svc' do
       action [:enable, :start]
   end
