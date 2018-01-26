@@ -1,5 +1,10 @@
 Chef::Log.info("** BOOTSTRAP START                      **")
 
+windows_package 'aws cli' do    
+  source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'    
+  action :install
+end
+
 powershell_script 'Install IIS' do
   code 'Add-WindowsFeature Web-Server'
   guard_interpreter :powershell_script
@@ -52,12 +57,6 @@ powershell_script 'Install IIS Application Initialization' do
   code 'Add-WindowsFeature Web-AppInit'
   guard_interpreter :powershell_script
   not_if "(Get-WindowsFeature -Name  Web-AppInit).Installed"
-end
-
-windows_package 'aws cli' do    
-  installer_type :msi    
-  source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'    
-  action :install
 end
 
 service 'w3svc' do
