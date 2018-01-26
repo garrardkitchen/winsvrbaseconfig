@@ -1,9 +1,20 @@
 Chef::Log.info("** BOOTSTRAP START                      **")
 
+
+remote_file 'c:/temp/AWSCLI64.msi' do
+  source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'
+  action :create
+end
+
 windows_package 'AWS Command Line Interface' do    
-  source "https://s3.amazonaws.com/aws-cli/AWSCLI64.msi"
+  source "c:/temp/AWSCLI64.msi"
   options '/quiet /passive /qn'
 end
+
+# windows_package 'AWS Command Line Interface' do    
+#   source "https://s3.amazonaws.com/aws-cli/AWSCLI64.msi"
+#   options '/quiet /passive /qn'
+# end
 
 powershell_script 'Install IIS' do
   code 'Add-WindowsFeature Web-Server'

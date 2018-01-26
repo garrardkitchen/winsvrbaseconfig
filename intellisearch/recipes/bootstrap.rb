@@ -5,7 +5,7 @@ Chef::Log.info("** INTELLISEARCH: BOOTSTRAP START                **")
 # app = search("aws_opsworks_app","deploy:true").first
 
 # if app['shortname'] == APP_NAME 
-    inclde_recipe 'shared::bootstrap_web'
+    include_recipe 'shared::bootstrap_web'
 # end
 
 Chef::Log.info("** INTELLISEARCH: BOOTSTRAP END                  **")

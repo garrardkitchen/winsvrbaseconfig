@@ -11,8 +11,20 @@ end
 
 #include_recipe 'shared::bootstrap_web'
 
-windows_package 'aws cli' do    
-    installer_type :msi    
-    source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'    
-    action :install
+# windows_package 'aws cli' do    
+#     installer_type :msi    
+#     source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'    
+#     action :install
+# end
+
+
+remote_file 'c:/temp/AWSCLI64.msi' do
+    source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'
+    action :create
 end
+
+windows_package 'AWS Command Line Interface' do    
+    source "c:/temp/AWSCLI64.msi"
+    options '/quiet /passive /qn'
+end
+  
