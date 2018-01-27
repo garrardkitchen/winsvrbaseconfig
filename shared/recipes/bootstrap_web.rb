@@ -1,14 +1,15 @@
 Chef::Log.info("** BOOTSTRAP START                      **")
 
-create_folder("c:\\temp")
+delete_folder("c:\\temp-msi")
+create_folder("c:\\temp-msi")
 
-remote_file 'c:/temp/AWSCLI64.msi' do
+remote_file 'c:/temp-msi/AWSCLI64.msi' do
   source 'https://s3.amazonaws.com/aws-cli/AWSCLI64.msi'
   action :create
 end
 
 windows_package 'AWS Command Line Interface' do    
-  source "c:/temp/AWSCLI64.msi"
+  source "c:/temp-msi/AWSCLI64.msi"
   options '/quiet /passive /qn'
 end
 
