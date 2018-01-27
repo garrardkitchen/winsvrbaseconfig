@@ -6,8 +6,8 @@ SEEDS = get_list_of_seeds()
 Chef::Log.info("List of seeds for #{APP_NAME} = #{SEEDS}")
 
 powershell_script 'Update Seed IPs for Evalaute Web' do
-    cwd "c:/temp/#{APP_NAME}"
-    code ". c:/temp/#{APP_NAME}/deploy/Patch-WebAkka.ps1 -Web Evaluate -SeedIPs #{SEEDS} -ErrorAction Stop"        
+    cwd "c:/temp/"
+    code ". c:/temp/deploy/Patch-WebAkka.ps1 -Web Evaluate -SeedIPs #{SEEDS} -ErrorAction Stop"        
 end
 
 Chef::Log.info("** EVALUATE-WEB: CONFIGURE END                   **")

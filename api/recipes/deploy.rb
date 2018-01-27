@@ -42,8 +42,8 @@ if node['allow_changes'] == true
     SEEDS = get_list_of_seeds()
 
     powershell_script 'install TMS and Intellisearch' do
-      cwd "c:/temp/#{APP_NAME}"
-      code ". c:/temp/#{APP_NAME}/deploy/Install-API.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
+      cwd "c:/temp/"
+      code ". c:/temp/deploy/Install-API.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
     end
 
     # powershell_script 'install TMS API' do

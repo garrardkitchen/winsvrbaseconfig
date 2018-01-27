@@ -44,8 +44,8 @@ if node['allow_changes'] == true
       Chef::Log.info("Single seed, pre-seed install via PS for #{APP_NAME} = #{SEED}")
 
       powershell_script 'Install Seed' do
-        cwd "c:/temp/#{APP_NAME}"
-        code ". c:/temp/#{APP_NAME}/deploy/Install-Seed.ps1 -Region #{REGION} -SeedIPs #{SEED} -ErrorAction Stop"        
+        cwd "c:/temp/"
+        code ". c:/temp/deploy/Install-Seed.ps1 -Region #{REGION} -SeedIPs #{SEED} -ErrorAction Stop"        
       end
 
       Chef::Log.info("********** INSTALLED #{APP_NAME} **********")

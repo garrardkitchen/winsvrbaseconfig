@@ -67,8 +67,8 @@ if node['allow_changes'] == true
     SEEDS = get_list_of_seeds()
 
     powershell_script 'install Evaluate Web' do
-      cwd "c:/temp/#{APP_NAME}"
-      code ". c:/temp/#{APP_NAME}/deploy/Install-Web.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
+      cwd "c:/temp/"
+      code ". c:/temp/deploy/Install-Web.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
     end
 
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
