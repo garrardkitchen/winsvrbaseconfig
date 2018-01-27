@@ -68,7 +68,7 @@ if node['allow_changes'] == true
 
     powershell_script 'install Evaluate Web' do
       cwd "c:/temp/#{APP_NAME}"
-      code ". c:/temp/#{APP_NAME}/deploy/Install-EvaluateWeb.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
+      code ". c:/temp/#{APP_NAME}/deploy/Install-Web.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
     end
 
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
