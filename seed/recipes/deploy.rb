@@ -30,8 +30,8 @@ if node['allow_changes'] == true
 
       #app = search(:aws_opsworks_app).first      
 
+      delete_folder("c:\\temp")
       create_folder("c:\\temp")
-      delete_folder("c:\\temp\\#{APP_NAME}")
 
       get_remote_file(URI.parse(app["app_source"]["url"]),"US-EAST-1","c:\\temp\\#{APP_NAME}.zip")
 
