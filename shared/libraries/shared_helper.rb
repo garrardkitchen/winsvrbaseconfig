@@ -21,6 +21,14 @@ module Shared_helper
         true
     end
 
+    def delete_folder(name)
+        directory name do 
+            recursive true                 
+            action :delete
+        end
+        true
+    end
+
     # get_remote_file(app["app_source"]["url"], "US-EAST-1", "C:\\temp\\#{app_name}.zip")
     def get_remote_file(uri, s3region, to_where)
     

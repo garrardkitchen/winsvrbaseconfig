@@ -6,7 +6,7 @@ chef_gem "aws-sdk" do
   action :install
 end
 
-APP_NAME = "evaluate_web"
+APP_NAME = "web"
 REGION = node['region']
 app = search("aws_opsworks_app","deploy:true").first
 time =  Time.new.strftime("%Y%m%d%H%M%S")
@@ -56,11 +56,11 @@ if node['allow_changes'] == true
     #app = search(:aws_opsworks_app).first      
 
     create_folder("c:\\temp")
-    create_folder("c:\\temp\\#{APP_NAME}", true)
+    delete_folder("c:\\temp\\#{APP_NAME}")
 
     get_remote_file(URI.parse(app["app_source"]["url"]),"US-EAST-1","c:\\temp\\#{APP_NAME}.zip")
 
-    unzip_file("c:\\temp\\#{APP_NAME}.zip", "c:\\temp\\#{APP_NAME}")
+    unzip_file("c:\\temp\\#{APP_NAME}.zip", "c:\\temp\\")
     
     Chef::Log.info("********** INSTALLING #{APP_NAME} **********")
 
