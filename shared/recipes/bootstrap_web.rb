@@ -15,7 +15,7 @@ end
 
 windows_package 'AWS Command Line Interface' do    
   source "c:/temp-msi/AWSCLI64.msi"
-  options '/quiet /passive /qn'
+  # options '/quiet /passive /qn'
 end
 
 # windows_package 'AWS Command Line Interface' do    
