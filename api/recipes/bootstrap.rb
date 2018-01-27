@@ -1,5 +1,5 @@
 Chef::Log.info("***************************************************")
-Chef::Log.info("** TMS API: BOOTSTRAP START                      **")
+Chef::Log.info("** API: BOOTSTRAP START                          **")
 
 # APP_NAME = "tms"
 # app = search("aws_opsworks_app","deploy:true").first
@@ -8,5 +8,5 @@ Chef::Log.info("** TMS API: BOOTSTRAP START                      **")
     include_recipe 'shared::bootstrap_web'
 # end
 
-Chef::Log.info("** TMS API: BOOTSTRAP END                        **")
+Chef::Log.info("** API: BOOTSTRAP END                            **")
 Chef::Log.info("***************************************************")

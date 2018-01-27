@@ -1,5 +1,5 @@
 Chef::Log.info("***************************************************")
-Chef::Log.info("** TMS API: DEPLOY START                         **")
+Chef::Log.info("** API: DEPLOY START                             **")
 
 chef_gem "aws-sdk" do
   compile_time false
@@ -41,33 +41,16 @@ if node['allow_changes'] == true
     
     SEEDS = get_list_of_seeds()
 
-    powershell_script 'install TMS and Intellisearch' do
+    powershell_script 'Install TMS and Intellisearch' do
       cwd "c:/temp/"
       code ". c:/temp/deploy/Install-API.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
     end
-
-    # powershell_script 'install TMS API' do
-    #   cwd "c:/temp/#{APP_NAME}"
-    #   code ". c:/temp/#{APP_NAME}/deploy/Install-TMS.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
-    # end
-
-    # powershell_script 'install IntelliSearch' do
-    #   cwd "c:/temp/#{APP_NAME}"
-    #   code ". c:/temp/#{APP_NAME}/deploy/Install-IntelliSearch.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
-    # end
-
-    # powershell_script 'install TMS Web' do
-    #   cwd "c:/temp/#{APP_NAME}"
-    #   code ". c:/temp/#{APP_NAME}/deploy/Install-TMSWeb.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
-    # end
-
-    Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
   
+    Chef::Log.info("********** INSTALLED #{APP_NAME} **********")  
   end  
-
 else
   Chef::Log.info("** Not allowing changes")
 end
 
-Chef::Log.info("** TMS API: DEPLOY END                           **")
+Chef::Log.info("** API: DEPLOY END                               **")
 Chef::Log.info("***************************************************")
