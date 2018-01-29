@@ -42,11 +42,26 @@ if node['allow_changes'] == true
     
     SEEDS = get_list_of_seeds()
 
-    powershell_script 'Install TMS and Intellisearch' do
+    powershell_script 'Install TMS' do
       cwd "c:/temp/"
-      code ". c:/temp/deploy/Install-API.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -Database '#{DB_PARAM}' -ErrorAction Stop"        
+      code ". c:/temp/deploy/Install-TMS.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -Database '#{DB_PARAM}' -ErrorAction Stop"        
     end
   
+    powershell_script 'Install Intellisearch Producer' do
+      cwd "c:/temp/"
+      code ". c:/temp/deploy/Install-IntellisearchProducer.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -Database '#{DB_PARAM}' -ErrorAction Stop"        
+    end
+
+    powershell_script 'Install Intellisearch Consumer' do
+      cwd "c:/temp/"
+      code ". c:/temp/deploy/Install-IntellisearchConsumer.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -Database '#{DB_PARAM}' -ErrorAction Stop"        
+    end
+
+    powershell_script 'Install TMS Web' do
+      cwd "c:/temp/"
+      code ". c:/temp/deploy/Install-TMSWeb.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -Database '#{DB_PARAM}' -ErrorAction Stop"        
+    end
+
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")  
   end  
 else
