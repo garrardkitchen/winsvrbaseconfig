@@ -13,11 +13,6 @@ end
 #   code "Start-Process msiexec.exe -Wait -ArgumentList '/I  c:/temp-msi/AWSCLI64.msi /quiet /passive /qn '"  
 # end
 
-windows_package 'AWS Command Line Interface' do    
-  source "c:/temp-msi/AWSCLI64.msi"
-  options '/quiet /passive /qn'
-end
-
 # windows_package 'AWS Command Line Interface' do    
 #   source "https://s3.amazonaws.com/aws-cli/AWSCLI64.msi"
 #   options '/quiet /passive /qn'

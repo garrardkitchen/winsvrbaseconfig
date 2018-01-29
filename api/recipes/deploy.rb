@@ -12,7 +12,8 @@ app = search("aws_opsworks_app","deploy:true").first
 time =  Time.new.strftime("%Y%m%d%H%M%S")
 instance = search("aws_opsworks_instance", "self:true").first
 rds_db_instance = search("aws_opsworks_rds_db_instance").first
- 
+DB_PARAM = "#{rds_db_instance['address']},#{rds_db_instance['db_instance_identifier']},#{rds_db_instance['db_user']},#{rds_db_instance['db_password']}" 
+
 if node['allow_changes'] == true 
 
   Chef::Log.info("** Allowing changes")
@@ -43,7 +44,7 @@ if node['allow_changes'] == true
 
     powershell_script 'Install TMS and Intellisearch' do
       cwd "c:/temp/"
-      code ". c:/temp/deploy/Install-API.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -ErrorAction Stop"        
+      code ". c:/temp/deploy/Install-API.ps1 -Region #{REGION} -SeedIPs '#{SEEDS}' -Db '#{DB_PARAM}' -ErrorAction Stop"        
     end
   
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")  

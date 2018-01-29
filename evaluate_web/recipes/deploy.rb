@@ -11,6 +11,7 @@ REGION = node['region']
 app = search("aws_opsworks_app","deploy:true").first
 time =  Time.new.strftime("%Y%m%d%H%M%S")
 rds_db_instance = search("aws_opsworks_rds_db_instance").first
+DB_PARAM = "#{rds_db_instance['address']},#{rds_db_instance['db_instance_identifier']},#{rds_db_instance['db_user']},#{rds_db_instance['db_password']}" 
 
 # file "c:\\inetpub\\wwwroot\\status.html" do
 #   content IO.binread("C:\\chef\\cookbooks\\status.html")
@@ -68,7 +69,7 @@ if node['allow_changes'] == true
 
     powershell_script 'install Evaluate Web' do
       cwd "c:/temp/"
-      code ". c:/temp/deploy/Install-Web.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -ErrorAction Stop"        
+      code ". c:/temp/deploy/Install-Web.ps1 -Region #{REGION} -SeedIPs #{SEEDS} -Db '#{DB_PARAM}' -ErrorAction Stop"        
     end
 
     Chef::Log.info("********** INSTALLED #{APP_NAME} **********")
